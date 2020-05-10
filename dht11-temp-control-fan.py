@@ -1,17 +1,15 @@
-from machine import Pin, PWM
+from machine import Pin
 from dht import DHT11
 from time import sleep
 
 dht11 = DHT11(Pin(15))
-fan = PWM(Pin(13))
+fan = Pin(13, Pin.OUT)
 
 while True:
     dht11.measure()
     temp = dht11.temperature()
-    if temp < 32:
-        fan.duty(0)
-    elif temp >= 32 and temp < 35:
-        fan.duty(512)
+    if temp > 32:
+        fan.on()
     else:
-        fan.duty(1023)
+        fan.off()
     sleep(1)
